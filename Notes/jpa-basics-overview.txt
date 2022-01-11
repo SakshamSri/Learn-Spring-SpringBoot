@@ -1,0 +1,27 @@
+"All below notes are according to Udemy tutorial : Master Hibernate and JPA with Spring Boot in 100 Steps.
+Course : Section 1 - Introduction -> 7.Quick Introduction to JPA
+Corresponding Github Code Repo : no code" 
+
+Quick Overview of JPA :
+
+JDBC and Spring JDBC -> need to know queries beforehand and then write code using those queries
+-> will lead to huge queries so diffcult to maintain
+
+JPA solves this issue -> Map Classes(objects) to respective Tables
+-> Use java code to insert/delete/update objects directly so need to learn queries
+-> Queries will be handle automatically by JPA BTS
+
+Main thing to do here is
+-> Define the objects(classes)/entities
+-> Map fields of the entities to actual database Tables' columns
+-> Define relationships between the objects(1-1, 1-x/x-1, x-x)
+
+"@Entity" marks the class to be now stored in database.
+
+Relationships - OneToMany, ManyToMany, OneToOne, ManyToOne
+Like in Course.class, field reviews will be @OneToMany (one course many reviews), field students will be @ManyToMany (many students can have many courses)
+
+We can still write queries in JPL:
+-> using JPLQL where we use entities to write queries (not table names)
+-> using CriteriaQuery
+-> directly using native SQL queries (jdbc way)

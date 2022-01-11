@@ -1,0 +1,9 @@
+Before Spring Boot :
+-> developing spring applications require that you choose the right version of the dependencies you are adding. Like hibernate version should match or be compatible with other dependencies like log4j, dispatcher, spring mvc etc.
+-> create a default exception handler
+-> create a compelte spring configuration file
+-> define a view resolver (redirect views to proper jsp)
+-> configure a web.xml where we needed to configure Dispatcher Servlet to handle the requests
+-> configure spring security so all requests are filtered
+
+All these stuffs are automatically provided by Spring Boot.

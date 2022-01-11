@@ -1,0 +1,35 @@
+Before introducing beans, questions to be asked :
+
+1) What are the beans?
+Ans:
+BinarySearchImplementation, BubbleSort, QuickSort
+(beans are classes whose objects needs to be managed by Spring, we add "@Component" annotation to the class)
+
+2) What are the dependencies of the beans?
+Ans:
+We add "@Autowired" annotation to the dependency. Like adding @Autowired to SortAlgorithm reference in BinarySearchImplementation because BinarySearchImplementation depends on SortAlgorithm.
+
+3) Where to search for the beans?
+Ans:
+Specify the package where to search for the beans. Package(and subpackages) where the main class is present, will automatically be scanned for beans. This is done by the "@SpringBootApplication" annotation in Main Class.
+Use "@ComponentScan" to add beans that are in different packages.
+
+
+Flow of spring bean:
+-> Search for beans
+-> Find beans and create instance
+-> Find dependency of the bean (if any)
+-> Create instance of the dependency(if any) beans (find dependency further if it exists and create instance of them)
+-> Autowire the beans via constructor, setter
+-> Finish creating instance of all beans
+
+
+If there are 2 components/beans available on the same class path(same package as the dependent bean) and for one dependency, then you need to mark one of the components with "@Primary" annotation
+Like BubbleSort and QuickSort both are Components present for BinarySearchImplementation but only one can be Primary.
+
+@Autowired :
+-> if you have defined a constructor, it will use constructor to autowire.
+-> if you have defined a setter, it will use setter to Autowire
+-> if you have defined nothing, it will create a setter and then autowire (GENERALLY USED)
+-> if you have defined both constructor and setter, it will use constructor to autowire
+-> Constructor injection adds complexity like having multiple args in constr and that will become hard to maintain
