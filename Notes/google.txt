@@ -1,0 +1,7 @@
+SOAP vs REST
+hal standard rest
+code review standards
+
+hazelcast cache
+mockito
+jenkins

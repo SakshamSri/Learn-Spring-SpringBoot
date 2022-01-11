@@ -1,0 +1,51 @@
+"All below notes are according to Udemy tutorial : Master Hibernate and JPA with Spring Boot in 100 Steps.
+Course : Section 2
+Corresponding Github Code Repo : Learn-Spring-SpringBoot/Learn-SpringBoot-withRest/Learn-SpringBoot-withRest/"
+
+@RestController -> to configure a controller
+Methods can be annotated with @GetMapping for GET request
+
+No need for configuring dispatcher, framework, server, etc. Directly we are implementing a rest service or the business logic. (advantage of using Spring Boot)
+
+
+@SpringBootApplication
+-> means the it is a spring context file
+-> it enables spring auto configuration
+-> enables component scan (itself's package and sub packages)
+
+SpringApplication runs the spring context and it returns the application context. Application context contains various stuffs like all beans configuration.
+
+Spring auto configuration :
+Spring Boot looks at
+1) Frameworks/Dependencies available on that classpath
+2) Existing configuration for the application.
+Based on these, Spring boot provides basic configuration needed to configure the application with these frameworks.
+This is called Auto configuration.
+Like we are using spring web starter project, so we need basic things like dispatcher, internalization, messaging, etc.
+So spring boot automatically configures these with basic configurations.
+
+There are many AutoConfiguation classes present in the maven jar and we can see if the beans are being created for them if proper conditions are met.
+
+Core of Spring Framework is Inversion of Control. Takes control of all beans and the dependencies.
+Spring Framework solves the problem of dependency injection. Making code loosely coupled and easy for testing.
+Also solves duplication code (like jdbc using queries, try/catch, etc), good integration with other frameworks, makes web development easy dispatcher servlet/view resolver/modelview.
+
+Spring Boot solves the configuration part -> auto configuration
+
+Spring Boot provides starters projs like actuator for monitoring, logging/log4j2 for logging
+
+Checking pom.xml of spring-boot-starter-web, we see it has a lot of dependency on others like validator, starter json, springweb, springmvc, hibernate, logging, etc. So, when runnning, all these dependencies get automatically configured and we can use them directly.
+Similarly in pom.xml for spring-boot-starter-test has dependency on junit, mockito, spring-test, etc.
+
+spring-boot-starter-jpa -> JPA is interface for hibernate, handling ORM implementations.
+
+Spring actuator -> monitoring Application
+-> check what services started/failed
+-> exposes rest services compliant according to hal rest standard
+-> we use a hal explorer to browse through the data provided by actuator
+
+management.endpoints.web.exposure.include=* -> expose all the http management endpoints, we dont do that in real case, we only enable according to need
+
+spring develepor tools dependency-> if server is up and I changed the game object to Witcher 2 (any java changes), we need to stop and restart the server to get the updated value.
+With devtools, we can make java change mid running and it does a soft restart (faster than stop and restart) to show updated content.
+It does not reload all the loaded beans, only reload the application related beans and not all the maven dependencies so faster.
