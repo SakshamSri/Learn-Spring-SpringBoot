@@ -1,0 +1,29 @@
+before springjdbc, even a single query line will be huge because of
+1) get connection
+2) prepare statement
+3) execute it
+4) iterate through the result
+5) add try catch everywhere
+
+with spring jdbc, we dont need to do any of this, all done by spring boot. we only need to execute the query and get back the result as the bean.
+
+H2 -> In memory database
+
+if we add a data.sql file in main/resources, springboot will use that file to initialize the h2 (because if you kill the server, database gets deleted and then everytime you need to add tables and stuff so this file will automatically do the job on server boot up)
+
+@Repository -> marks that class as repository.
+A repository is a mechanism for encapsulating storage, retrieval, and search behavior on the database
+
+JdbcTemplate -> to execute the query, it automatically creates a connection with the database
+
+JdbcTemplate.query -> we can pass a beanpropertyrowmapper which will automatically map the table to the bean we will provide.
+if using beanpropertyrowmapper, need to have an empty contr present in the bean
+
+if your defined class name or field names are different from the table then you can define your own RowMapper.
+and map the table row columns with the corresponding class fields.
+
+implementing CommandLineRunner in SpringBootApplication -> basically will execute the code, as soon as application context is ready, in CommandLineRunner (run method).
+
+H2AutoConfiguration requires console.enabled plus WebServlet class present
+DataSourceAutoConfiguration requires DataSource class
+JdbcTemplateAutoConfiguration requires DataSource class and a primary bean

@@ -1,6 +1,6 @@
 "All below notes are according to Udemy tutorial : Master Hibernate and JPA with Spring Boot in 100 Steps.
 Course : Section 1 - Introduction -> 7.Quick Introduction to JPA
-Corresponding Github Code Repo : no code" 
+Corresponding Github Code Repo : no code"
 
 Quick Overview of JPA :
 

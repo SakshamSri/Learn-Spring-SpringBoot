@@ -21,10 +21,15 @@ Spring Boot looks at
 2) Existing configuration for the application.
 Based on these, Spring boot provides basic configuration needed to configure the application with these frameworks.
 This is called Auto configuration.
-Like we are using spring web starter project, so we need basic things like dispatcher, internalization, messaging, etc.
-So spring boot automatically configures these with basic configurations.
+Like for spring mvc, it will auto configure the dispatcher servlet
+for jpa, it will auto configure the entity manager and transaction manager
 
-There are many AutoConfiguation classes present in the maven jar and we can see if the beans are being created for them if proper conditions are met.
+from AutoConfiguation report:
+H2AutoConfiguration requires console.enabled plus WebServlet class present
+DataSourceAutoConfiguration requires DataSource class
+JdbcTemplateAutoConfiguration requires DataSource class and a primary bean
+
+There are many AutoConfiguation classes present in the maven jar and we can see if the beans are being created for them if proper conditions are met (@ConditionalOnClass, etc.).
 
 Core of Spring Framework is Inversion of Control. Takes control of all beans and the dependencies.
 Spring Framework solves the problem of dependency injection. Making code loosely coupled and easy for testing.
