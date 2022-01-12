@@ -1,6 +1,7 @@
 SOAP vs REST
 hal standard rest
 code review standards
+jpa vs Hibernate
 
 hazelcast cache
 mockito

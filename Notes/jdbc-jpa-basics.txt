@@ -31,3 +31,19 @@ implementing CommandLineRunner in SpringBootApplication -> basically will execut
 H2AutoConfiguration requires console.enabled plus WebServlet class present
 DataSourceAutoConfiguration requires DataSource class
 JdbcTemplateAutoConfiguration requires DataSource class and a primary bean
+
+JPA standardizes ORM (object relational mapping)
+Hibernate is the implementation of JPA (there are other implementations of JPA as well)
+
+for JPA, we add Repository and Transaction because we can have multiple transactions and we want either to fail all or pass all.
+Typically, transaction is managed at business service level than respository level.
+
+Entity Manager -> manages the entities
+all operations that we do are stored inside the PersistentContext for which Entity Manager is the interface.
+
+So Hibernate actually creates the schema for us from the entity that we define so we dont need to create table everytime in data.sql
+
+Hibernate creates a sequence (sql) and uses that seq to assign id automatically if @GeneratedValue is added.
+
+findall (select * from table) method is not defined in JPA so we use JPQL namedquery.
+JPQL uses entities instead of table names.

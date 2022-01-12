@@ -34,7 +34,7 @@ public class PersonJdbcDao {
 	}
 
 	// method for -> select * from person
-	public List<Person> findAllPersons() {
+	public List<Person> getAllPersons() {
 		return jdbcTemplate.query("select * from person", new PersonRowMapper());
 	}
 
@@ -56,7 +56,7 @@ public class PersonJdbcDao {
 	}
 
 	// method for -> update person set name=?, location=?, birth_date=? where id=?
-	public int updatePersonById(Person person) {
+	public int updatePerson(Person person) {
 		return jdbcTemplate.update("update person set name=?, location=?, birth_date=? where id=?",
 				new Object[] { person.getName(), person.getLocation(), new Timestamp(person.getBirthDate().getTime()),
 						person.getId() });
@@ -64,7 +64,7 @@ public class PersonJdbcDao {
 
 	// method for -> insert into person(id, name, location, birth_date) values
 	// (?,?,?,?)
-	public int insertPersonById(Person person) {
+	public int insertPerson(Person person) {
 		return jdbcTemplate.update("insert into person (id, name, location, birth_date) values (?, ?, ?, ?)",
 				new Object[] { person.getId(), person.getName(), person.getLocation(),
 						new Timestamp(person.getBirthDate().getTime()) });
