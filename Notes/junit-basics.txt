@@ -1,0 +1,17 @@
+Junit can be run in continous integrations (at freq intervals or whenever there is code change, etc)
+
+@Before -> run before every test
+@After -> run after every test
+
+@BeforeClass -> run before all tests run (first thing) -> should be static
+@AfterClass -> run after all tests run (last thing) -> should be static
+
+Order:
+BeforeClass
+Before
+Test1
+After
+Before
+Test2
+After
+AfterClass
