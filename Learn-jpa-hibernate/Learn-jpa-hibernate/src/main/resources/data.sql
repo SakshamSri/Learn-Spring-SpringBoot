@@ -1,0 +1,1 @@
+insert into course(id, name) values(101, 'Course101');

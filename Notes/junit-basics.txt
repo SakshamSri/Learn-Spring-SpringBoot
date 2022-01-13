@@ -1,17 +1,17 @@
 Junit can be run in continous integrations (at freq intervals or whenever there is code change, etc)
 
-@Before -> run before every test
-@After -> run after every test
+@BeforeEach -> run before every test
+@AfterEach -> run after every test
 
-@BeforeClass -> run before all tests run (first thing) -> should be static
-@AfterClass -> run after all tests run (last thing) -> should be static
+@BeforeAll -> run before all tests run (first thing) -> should be static
+@AfterAll -> run after all tests run (last thing) -> should be static
 
 Order:
-BeforeClass
-Before
+BeforeAll
+BeforeEach
 Test1
-After
-Before
+AfterEach
+BeforeEach
 Test2
-After
-AfterClass
+AfterEach
+AfterAll
