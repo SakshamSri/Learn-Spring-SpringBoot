@@ -15,3 +15,7 @@ BeforeEach
 Test2
 AfterEach
 AfterAll
+
+@SpringBootTest -> you want to add the spring context itself (not only the test) and then the test is run and then context destroyed. from junit5, default this is added and context launches.
+
+@DirtiesContext -> resets the data that is being altered in the test

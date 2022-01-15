@@ -47,3 +47,30 @@ Hibernate creates a sequence (sql) and uses that seq to assign id automatically 
 
 findall (select * from table) method is not defined in JPA so we use JPQL namedquery.
 JPQL uses entities instead of table names.
+
+deleting data is transacational.
+
+Entity Manager : persits vs merge -> https://stackoverflow.com/questions/1069992/jpa-entitymanager-why-use-persist-over-merge/
+
+Entity Manager ->
+perist - will track the entity (the entity fields will be updated but not sent to db) but actual update to db is sent only after flush() or automatically commit on method end. PersistentContext is the one handling all these entities.
+
+flush - EntityManager.persist() makes an entity persistent whereas EntityManager.flush() actually runs the query on your database. So, when you call EntityManager.flush(), queries for inserting/updating/deleting associated entities are executed in the database. Any constraint failures (column width, data types, foreign key) will be known at this time. The concrete behaviour depends on whether flush-mode is AUTO or COMMIT. AUTO will force the changes to that entity to be flushed before the next SELECT execution(for eg). If it's set to COMMIT the persitence of the data to the underlying database will be delayed when the transaction is commited.
+
+detach(Entity) - detach the entity so that it is not persisted. Anymore changes to entity will not be reflected in database until merge is called.
+
+clear - detach all the entities within the method.
+
+refresh(Entity) - reverts the entity values to the values that is in the db. So, any value changes made to entity after flush or commit will be lost and last updated value from db is fetched and set to the entity.
+
+JPQL -
+queries written on entities
+
+@CreationTimestamp -> when row was created
+@UpdateTimestamp -> when row was last updated
+
+@NamedQuery -> no need to code it again, once define above entity and use it anywhere
+For multiple named queries, use @NamedQueries
+
+Native Queries -> direct sql queries in jpa (use tables instead of entities)
+When using native queries, PersistentContext is not involved here so if using entites we need to refresh to get latest values from db
