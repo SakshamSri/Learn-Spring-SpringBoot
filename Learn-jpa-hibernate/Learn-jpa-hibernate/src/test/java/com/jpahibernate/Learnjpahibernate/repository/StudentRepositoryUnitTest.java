@@ -7,9 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jpahibernate.Learnjpahibernate.LearnJpaHibernateApplication;
+import com.jpahibernate.Learnjpahibernate.entity.Passport;
 import com.jpahibernate.Learnjpahibernate.entity.Student;
 
 @SpringBootTest(classes = LearnJpaHibernateApplication.class)
@@ -29,5 +31,22 @@ class StudentRepositoryUnitTest {
 		Student find = em.find(Student.class, 201L);
 		logger.info("\nStudent info -> {}", find);
 		logger.info("\nPassport info -> {}", find.getPassport());
+	}
+
+	@Test
+	@DirtiesContext
+	public void ut2() {
+		studentRepository.someFunction();
+	}
+
+	// retrieve student details from passport
+	@Test
+	@Transactional
+	public void uT3() {
+		Passport passport = em.find(Passport.class, 302L);
+
+		logger.info("\nPassport details -> {}", passport);
+
+		logger.info("\nStudent details -> {}", passport.getStudent());
 	}
 }

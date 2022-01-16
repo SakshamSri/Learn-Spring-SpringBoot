@@ -84,3 +84,10 @@ To avoid this we can define in passport field in student entity, the fetchtype=l
 With this, now when we do em.find it will only fetch student details.
 And, if we try to do student.getpassport(), it will throw error because there wont be anymore transaction. Session ended on find student.
 We can avoid this session ending by adding @Transactional to that method. It will prevent session from ending method exit, then can call student.getpassport() and it will again run the query to fetch passport details.
+
+mappedBy ->
+Student table can have passportid column and passport table can have studentid column but that will make it redundant.
+So, we make one the owner of the relationship by adding a mappedBy in the @OnetoOne.
+Here, we make the Student the owner, so we add mappedBy="passport" (the passport field name in Student table)
+This way we can get the student from the passport entity but no need to maintain student id column.
+Called bidirectional navigation.

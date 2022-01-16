@@ -44,4 +44,14 @@ public class StudentRepository {
 
 		entityManager.persist(student);
 	}
+
+	public void someFunction() {
+		Student student = findStudentById(201L);
+
+		Passport passport = student.getPassport();
+
+		student.setName("Student201-updated");
+
+		passport.setNumber("Passport301-updated");
+	}
 }
