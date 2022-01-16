@@ -74,3 +74,13 @@ For multiple named queries, use @NamedQueries
 
 Native Queries -> direct sql queries in jpa (use tables instead of entities)
 When using native queries, PersistentContext is not involved here so if using entites we need to refresh to get latest values from db
+
+foreign key -> primary key in different table
+student entity has passport id -> student table is owning the relationship
+
+for OnetoOne -> details are Eager Fetched meaning if student data is retrieved then passport data is also retrieved with it because Student OnetoOne Passport.
+
+To avoid this we can define in passport field in student entity, the fetchtype=lazy
+With this, now when we do em.find it will only fetch student details.
+And, if we try to do student.getpassport(), it will throw error because there wont be anymore transaction. Session ended on find student.
+We can avoid this session ending by adding @Transactional to that method. It will prevent session from ending method exit, then can call student.getpassport() and it will again run the query to fetch passport details.
