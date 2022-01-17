@@ -17,7 +17,7 @@ public class Student {
 	@Column(nullable = false)
 	private String name;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY) // default fetchType is Eager
 	private Passport passport;
 
 	protected Student() {

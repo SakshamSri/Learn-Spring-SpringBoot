@@ -1,17 +1,23 @@
 package com.jpahibernate.Learnjpahibernate.repository;
 
+import java.util.ArrayList;
+
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jpahibernate.Learnjpahibernate.entity.Course;
+import com.jpahibernate.Learnjpahibernate.entity.Review;
 
 @Repository
 @Transactional
 public class CourseRepository {
 
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	@Autowired
 	EntityManager entityManager;
 
@@ -56,5 +62,45 @@ public class CourseRepository {
 
 		Course course2 = findCourseById(101L);
 		course2.setName("Course101_updated");
+	}
+
+	public void saveReviewsForCourse(long id) {
+		Course course = findCourseById(id);
+		if (course == null)
+			return;
+		logger.info("\nCourse reviews -> {}", course.getReviews());
+
+		Review review1 = new Review("NewReview101", "DescriptionNew101");
+		Review review2 = new Review("NewReview102", "DescriptionNew102");
+
+		/**
+		 * entityManager.persist(review1); entityManager.persist(review2); if we persist
+		 * before setting up the relationship, then first insert into review is made
+		 * with blank course id and then an update review is sent to update the course
+		 * id
+		 */
+		course.addReview(review1);
+		review1.setCourse(course);
+
+		course.addReview(review2);
+		review2.setCourse(course);
+
+		entityManager.persist(review1);
+		entityManager.persist(review2);
+
+	}
+
+	public void saveReviewsForCourse(long id, ArrayList<Review> reviews) {
+		Course course = findCourseById(id);
+		if (course == null)
+			return;
+		logger.info("\nCourse reviews -> {}", course.getReviews());
+
+		for (Review review : reviews) {
+			course.addReview(review);
+			review.setCourse(course);
+			entityManager.persist(review);
+		}
+
 	}
 }

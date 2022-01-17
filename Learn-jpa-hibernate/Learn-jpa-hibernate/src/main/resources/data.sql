@@ -13,7 +13,7 @@ insert into student(id, name, passport_id) values(202, 'Student202', 302);
 insert into student(id, name, passport_id) values(203, 'Student203', 303);
 insert into student(id, name, passport_id) values(204, 'Student204', 304);
 
-insert into review(id, rating, description) values(401, 'Rating401', 'Description401');
-insert into review(id, rating, description) values(402, 'Rating402', 'Description402');
-insert into review(id, rating, description) values(403, 'Rating403', 'Description403');
-insert into review(id, rating, description) values(404, 'Rating404', 'Description404');
+insert into review(id, rating, description, course_id) values(401, 'Rating401', 'Description401', 101);
+insert into review(id, rating, description, course_id) values(402, 'Rating402', 'Description402', 101);
+insert into review(id, rating, description, course_id) values(403, 'Rating403', 'Description403', 104);
+insert into review(id, rating, description, course_id) values(404, 'Rating404', 'Description404', 103);

@@ -37,6 +37,7 @@ Hibernate is the implementation of JPA (there are other implementations of JPA a
 
 for JPA, we add Repository and Transaction because we can have multiple transactions and we want either to fail all or pass all.
 Typically, transaction is managed at business service level than respository level.
+If we are making changes to the db, we need to add @Transaction. (any method or sub called methods or UT)
 
 Entity Manager -> manages the entities
 all operations that we do are stored inside the PersistentContext for which Entity Manager is the interface.
@@ -87,7 +88,30 @@ We can avoid this session ending by adding @Transactional to that method. It wil
 
 mappedBy ->
 Student table can have passportid column and passport table can have studentid column but that will make it redundant.
-So, we make one the owner of the relationship by adding a mappedBy in the @OnetoOne.
-Here, we make the Student the owner, so we add mappedBy="passport" (the passport field name in Student table)
+So, we make one the owner of the relationship.
+We add mappedBy in the @OnetoOne to the not-owning entity in the relationship.
+Here, we make the Student the owner, so we add mappedBy="passport" in Passport entity.
 This way we can get the student from the passport entity but no need to maintain student id column.
 Called bidirectional navigation.
+
+Hibernate waits until last step to push the entity to the db
+Because if some error occurs in the transaction then we need to roll back the db changes. So, if we wait till last step, we can avoid this rollback.
+And, even if we flush mid transaction, then also everything will be roll backed if some error occurs in the transaction.
+This is because the whole thing is a transaction so its either 1 or 0.
+
+
+@manytoone @onetomany ->
+Course can have x reviews but review can be associated with only 1 Course
+So Review table will have a course id (course table cannot have review id because one course can have multiple review ids and that will lead to row duplication)
+Review entity will be the owning one relationship.
+@OneToMany = current entity should be one and is different than owning the relationship.
+
+If we persist before setting up the relationship, then first insert into review is made with blank course id and then an update review is sent to update the course id.
+
+Fetch Type defaults for both hibernate and JPA latest ->
+OneToMany: LAZY
+ManyToOne: EAGER
+ManyToMany: LAZY
+OneToOne: EAGER
+
+**ToOne is always EAGER

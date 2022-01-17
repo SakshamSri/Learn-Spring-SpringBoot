@@ -40,9 +40,10 @@ public class StudentRepository {
 
 		entityManager.persist(passport);
 
+		entityManager.persist(student);
+
 		student.setPassport(passport);
 
-		entityManager.persist(student);
 	}
 
 	public void someFunction() {
