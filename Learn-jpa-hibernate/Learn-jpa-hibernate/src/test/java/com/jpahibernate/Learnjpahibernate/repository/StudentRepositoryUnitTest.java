@@ -11,6 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jpahibernate.Learnjpahibernate.LearnJpaHibernateApplication;
+import com.jpahibernate.Learnjpahibernate.entity.Course;
 import com.jpahibernate.Learnjpahibernate.entity.Passport;
 import com.jpahibernate.Learnjpahibernate.entity.Student;
 
@@ -48,5 +49,25 @@ class StudentRepositoryUnitTest {
 		logger.info("\nPassport details -> {}", passport);
 
 		logger.info("\nStudent details -> {}", passport.getStudent());
+	}
+
+	@Test
+	@Transactional
+	public void uT4() {
+		Student student = em.find(Student.class, 201L);
+
+		logger.info("\nStudent details -> {}", student);
+
+		logger.info("\nCourse details -> {}", student.getCourses());
+	}
+
+	@Test
+	@Transactional
+	public void uT5() {
+		Course course = em.find(Course.class, 101L);
+
+		logger.info("\nCourse details -> {}", course);
+
+		logger.info("\nStudent details -> {}", course.getStudents());
 	}
 }

@@ -17,3 +17,9 @@ insert into review(id, rating, description, course_id) values(401, 'Rating401', 
 insert into review(id, rating, description, course_id) values(402, 'Rating402', 'Description402', 101);
 insert into review(id, rating, description, course_id) values(403, 'Rating403', 'Description403', 104);
 insert into review(id, rating, description, course_id) values(404, 'Rating404', 'Description404', 103);
+
+insert into student_course(student_id, course_id) values(201, 101);
+insert into student_course(student_id, course_id) values(202, 101);
+insert into student_course(student_id, course_id) values(203, 101);
+insert into student_course(student_id, course_id) values(201, 102);
+insert into student_course(student_id, course_id) values(203, 103);

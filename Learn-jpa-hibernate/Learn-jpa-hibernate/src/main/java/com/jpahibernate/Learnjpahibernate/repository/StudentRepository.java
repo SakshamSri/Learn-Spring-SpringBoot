@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jpahibernate.Learnjpahibernate.entity.Course;
 import com.jpahibernate.Learnjpahibernate.entity.Passport;
 import com.jpahibernate.Learnjpahibernate.entity.Student;
 
@@ -54,5 +55,25 @@ public class StudentRepository {
 		student.setName("Student201-updated");
 
 		passport.setNumber("Passport301-updated");
+	}
+
+	public void saveStudentWithCourseHardcoded() {
+		Student student = new Student("Raj");
+		Course course = new Course("CourseRaj");
+
+		entityManager.persist(course);
+		entityManager.persist(student);
+
+		student.addCourse(course);
+		course.addStudent(student);
+	}
+
+	public void saveStudentWithCourse(Student student, Course course) {
+
+		entityManager.persist(course);
+		entityManager.persist(student);
+
+		student.addCourse(course);
+		course.addStudent(student);
 	}
 }

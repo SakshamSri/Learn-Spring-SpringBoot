@@ -24,7 +24,8 @@ public class LearnJpaHibernateApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		// studentRepository.saveStudentWithPassport();
-		courseRepository.saveReviewsForCourse(103L);
+		// courseRepository.saveReviewsForCourse(103L);
+		studentRepository.saveStudentWithCourseHardcoded();
 	}
 
 }

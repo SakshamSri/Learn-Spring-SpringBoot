@@ -115,3 +115,11 @@ ManyToMany: LAZY
 OneToOne: EAGER
 
 **ToOne is always EAGER
+
+@ManyToMany ->
+Create a join table that maps student id to course id or vice versa (because adding only in one table will make the relationship data become redundant)
+If add ManyToMany on both entities, then in db there will be 2 tables course_student and student_course
+So, we need to make one the owning table to avoid duplication of tables in db.
+Also since, we will be using a join table so making any one the owning is fine. (owning by adding mappedBy to the other)
+
+@JoinTable -> customize the join table created by manytomany, annontation added on owning side
