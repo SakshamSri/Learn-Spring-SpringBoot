@@ -1,5 +1,5 @@
 "All below notes are according to Udemy tutorial : Master Hibernate and JPA with Spring Boot in 100 Steps.
-Course : Section 3
+Course : Section 3 onwards
 Corresponding Github Code Repo : Learn-Spring-SpringBoot/Learn-jdbc-jpa/Learn-jdbc-jpa/"
 
 before springjdbc, even a single query line will be huge because of
@@ -123,3 +123,18 @@ So, we need to make one the owning table to avoid duplication of tables in db.
 Also since, we will be using a join table so making any one the owning is fine. (owning by adding mappedBy to the other)
 
 @JoinTable -> customize the join table created by manytomany, annontation added on owning side
+
+Inheritance Relationship -> 4 methods
+
+M1=Single Table Inheritance - Suppose employee has 2 sub class called fulltime and parttime, so we can use @Inheritance and use InheritanceType.SINGLE(default type) to save both employee types data in one table instead of creating 2 different tables and then joining them. It created one more column(DTYPE, can be customized with @DiscriminatorColumn) that differentiates whether the row is for fulltime or parttime. This is good for performance since there is only one table to look for data and fetch. But, data integrity is hampered since now hourlywage and salary needs to be made nullable (as one is null for other type). This can lead to data invalidity because now someone can put hourlywage as null for parttime employee which should not allowed (wage is important cannot be null).
+
+M2=Table per class - Individual tables are created for Concrete classes (Employee is abstract so no table for employee but FullTime and PartTime are concrete so one table each is created for them and data is stored in different tables). Even though 2 tables will be created but that will be internal so no code changes are needed. We just need to insert for Employee. When we are retrieving data for all Employee, then internally from both tables data is retrieved and then union is done. Performance is ok (since union is not an issue and data is fetched from individual table) and data integrity is maintained. But, the issue is there is repitition of columns. The common columns are repeated in both tables and there might be a lot of columns that are common and those will be repeated.
+
+M3=Joined - Employe has own table (common to other both tables columns only), FullTime has own table(own data column with id from Employee(fk)) and PartTime has own table(own data column with id from Employee(fk)). To retrieve data, 3 table joins were made so performance is low. But, data integrity is best since all have different tables and no data replication.
+
+M4=Mapped Super Class - (Dont use @Inheritance) Use @MappedSuperClass. When a class is @MappedSuperClass, it cannot be an @Entity. So, no table for Employee itself. We cannot use "select e from Employee e" since Employee itself is not an Entity. So, to retrieve data, we need to retrieve all data individually from FullTime table and PartTime table.
+
+M1 performance best at the cost of data integrity
+M2 repeating columns so NO (3NF doesnt allow this)
+M3 data integrity best at the cost of performance
+M4 repeating columns so NO (3NF doesnt allow this)
