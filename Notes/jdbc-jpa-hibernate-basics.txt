@@ -210,7 +210,7 @@ Isolation levels:
 Read Uncommitted - allow all transactions to read whatever they want with or without commit.
 issue= Dirty Read, Non Repeatable Read, Phantom Read
 
-Read Uncommitted - allow transaction to read data(cell values like age in Person table, or money value in A,B,C eg) that are only committed by transaction.
+Read Uncommitted - allow other transaction to read data(cell values like age in Person table, or money value in A,B,C eg) that are only committed by using transaction.
 updating other values of cell can happen and insertion of new rows as well so NRR and PR both can be done.
 issue= No Dirty Read, Non Repeatable Read, Phantom Read
 
