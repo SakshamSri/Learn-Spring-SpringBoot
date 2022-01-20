@@ -161,3 +161,78 @@ Steps:
 3) Define Predicates etc using Criteria Builder
 4) Add Predicates etc to the Criteria Query
 5) Build the TypedQuery using the entity manager and criteria query
+
+Transaction Management(Section 12) ->
+
+Atomicity - either transaction is completely successful or none of them (rolled back)
+Consistency - any transaction should leave the system in consistent state. (suppose A is transferring money to B, no matter the transaction failed or succeeded, the total money(A+B) should be same (consistent))
+Isolation - how much inside of the transaction is visible to outside transaction (suppose A is transferring money to B, in between if someone wants to read the amount A has, then should it show the updated value?)
+Durability - once transaction is successful, even if the system crashes (no matter what the end state), the data should be persisted (the result should be permanent).
+
+Isolation related issues:
+Transactions running parallel
+
+Dirty Read -
+A=200, B=300, C=500
+
+T1 - A 50$ to B
+T2 - A 100$ to C
+
+Suppose T1 is executing and it deducted A balance by 50. In between, the T2 also starts and it deducts 100 from A. Now, A has 50. Now, suppose step 2 of T1 is executing where 50 deducted from A is bein transferred to B and IT FAILS. So, this transaction needs to rolled back since one step failed so T1 is rolled back. When rolling back T1, A will reset to 200 (this was the value of A before T1) and B will reset to 300 (50 is not added to B).
+Now, step of T2 executes and 100 is added to C making C=600.
+The system is not in consisted state because A has 200 (OK), B has 300 (OK) but C has 600 (NOT OK).
+This happened because C started to executes its transaction midway T1 was executing. It read the modified value of A before the T1 (that modified the value of A) finished the execution. This read by C is called DIRTY READ.
+
+Non Repeatable Read -
+Person table(id, name, age)
+
+Order of execution:
+T1 Step 1 - Select * from Person where id is 10
+T2 Step 1 - Update Person set age=30 where id is 10
+T1 Step 2 - Select * from Person where id is 10
+
+When T1 S1 was reading id10 age it was different and when T1 S2 was reading the age it was different.
+While reading same thing twice (2 different points of same transaction), getting 2 different values. This is called Non Repeatable Read.
+
+Phantom Read -
+Person table(id, name, age)
+
+Order of execution:
+T1 Step 1 - Select * from Person where age between 4 and 44
+T2 Step 1 - Insert Person Ravi(x,y,age=23)
+T1 Step 2 - Select * from Person where age between 4 and 44
+
+Here when T1 S2 executes, it will have one row extra than when it was in T1 S1.
+While reading the same table twice (2 different points of same transaction), getting different number of rows. This is called Phantom Read. (phantom row is getting added(can be deleted also))
+
+Isolation levels:
+
+Read Uncommitted - allow all transactions to read whatever they want with or without commit.
+issue= Dirty Read, Non Repeatable Read, Phantom Read
+
+Read Uncommitted - allow transaction to read data(cell values like age in Person table, or money value in A,B,C eg) that are only committed by transaction.
+updating other values of cell can happen and insertion of new rows as well so NRR and PR both can be done.
+issue= No Dirty Read, Non Repeatable Read, Phantom Read
+
+Repeatable Read - lock the whole row until the commit is done by the transaction. (the whole row that is being used by the transaction is locked even though only one cell value is being used)
+eg from Non Repeatable Read, the T2 S1 wont be able to happen because the whole row will be locked. So no NRR.
+The table is still accessible so Insert can happen and so Phanton Read is possible.
+issue= No Dirty Read, No Non Repeatable Read, Phantom Read
+
+Serializable - here table lock is placed on the table for a specific constraint that is being used in the Transation.
+In Phantom Read eg, the table lock will be placed for all rows where age is between 4 and 44. (So Ravi cant be inserted at all)
+if there is no constraint (selec t * from Person) then whole table will be locked so no data insertion can happen in between. (Solved all issue)
+issue= No Dirty Read, No Non Repeatable Read, No Phantom Read
+
+Which to use?
+Performance wise Serializable is worst because if 1000 transactions (all select * from table) are happening in parallel then only 1 will be executed at a time because of table lock down till one transation finished. So, very poor performance.
+Typically, Read Committed is mostly used (good performance and somewhat data consistency).
+
+@Transactional -> Springframework vs javax.persitence
+this annontation is available in 2 packages.
+Javax.persitence (JPA) one is recommended when we dealing with 1 singular database.
+Springframework one is recommended when we are dealing with multiple databases and multiple message queues as well.
+
+With Springframework we can also use @Transactional(isolation = IsoltionType.X) where X will be above 4 isolation levels.
+
+We can also define an application level isolation level in application.properties with "spring.jpa.properties.hibernate.connection.isolation=x" x is the value for transation isolation level.
