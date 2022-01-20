@@ -65,7 +65,7 @@ clear - detach all the entities within the method.
 refresh(Entity) - reverts the entity values to the values that is in the db. So, any value changes made to entity after flush or commit will be lost and last updated value from db is fetched and set to the entity.
 
 JPQL -
-queries written on entities
+queries written on entities, also makes the complex queries easier on entities and relationships
 
 @CreationTimestamp -> when row was created
 @UpdateTimestamp -> when row was last updated
@@ -138,3 +138,26 @@ M1 performance best at the cost of data integrity
 M2 repeating columns so NO (3NF doesnt allow this)
 M3 data integrity best at the cost of performance
 M4 repeating columns so NO (3NF doesnt allow this)
+
+JPQL using Entites and Relationships ->
+
+JOIN = Select c,s from Course c join c.students s
+LEFT JOIN = select c,s from Course c left join c.students s
+CROSS JOIN = select c,s from Course c, Student s
+
+Join will return courses that have students
+Left Join will return courses with students and also courses that dont have students
+Cross join is cross prod so if course has 4 rows and student as 3 rows, it will map every course with every student and return total of 12 rows.
+
+When doing join, jpl returns an array of array. The whole result is an array that will have 2 arrays one for course and one for student. So, result[0] will be course array and result[1] is student when doing c,s
+
+Criteria API ->
+
+Writing queries is hard (even jpql) so instead write an api that does the task for us. (more complex tho)
+
+Steps:
+1) Use Criteria Builder to create a Criteria Query returning the expected result object
+2) Define roots for tables which are involved in the Query (which table you are getting the data from)
+3) Define Predicates etc using Criteria Builder
+4) Add Predicates etc to the Criteria Query
+5) Build the TypedQuery using the entity manager and criteria query

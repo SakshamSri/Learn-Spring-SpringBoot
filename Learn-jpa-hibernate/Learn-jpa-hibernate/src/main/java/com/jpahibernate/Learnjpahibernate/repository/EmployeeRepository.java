@@ -3,7 +3,7 @@ package com.jpahibernate.Learnjpahibernate.repository;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,17 +33,17 @@ public class EmployeeRepository {
 	// To be used only when using Inheritance since in MappedSuperClass Employee is
 	// not an entity
 	public List<Employee> getEmployees() {
-		Query query = entityManager.createQuery("select e from Employee e", Employee.class);
+		TypedQuery<Employee> query = entityManager.createQuery("select e from Employee e", Employee.class);
 		return query.getResultList();
 	}
 
 	public List<Employee> getFullTimeEmployees() {
-		Query query = entityManager.createQuery("select e from FullTimeEmployee e", Employee.class);
+		TypedQuery<Employee> query = entityManager.createQuery("select e from FullTimeEmployee e", Employee.class);
 		return query.getResultList();
 	}
 
 	public List<Employee> getPartTimeEmployees() {
-		Query query = entityManager.createQuery("select e from PartTimeEmployee e", Employee.class);
+		TypedQuery<Employee> query = entityManager.createQuery("select e from PartTimeEmployee e", Employee.class);
 		return query.getResultList();
 	}
 

@@ -2,6 +2,7 @@ insert into course(id, name, created_date_time, last_updated_date_time) values(1
 insert into course(id, name, created_date_time, last_updated_date_time) values(102, 'Course102', sysdate(), sysdate());
 insert into course(id, name, created_date_time, last_updated_date_time) values(103, 'Course103', sysdate(), sysdate());
 insert into course(id, name, created_date_time, last_updated_date_time) values(104, 'Spring in 100 Steps', sysdate(), sysdate());
+insert into course(id, name, created_date_time, last_updated_date_time) values(105, 'Spring in 102 Steps', sysdate(), sysdate());
 
 insert into passport(id, number) values(301, 'Passport301');
 insert into passport(id, number) values(302, 'Passport302');
