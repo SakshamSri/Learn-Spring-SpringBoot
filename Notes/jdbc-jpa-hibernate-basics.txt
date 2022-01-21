@@ -236,3 +236,17 @@ Springframework one is recommended when we are dealing with multiple databases a
 With Springframework we can also use @Transactional(isolation = IsoltionType.X) where X will be above 4 isolation levels.
 
 We can also define an application level isolation level in application.properties with "spring.jpa.properties.hibernate.connection.isolation=x" x is the value for transation isolation level.
+
+Spring Data JPA ->
+
+StudentRepository and CourseRepository have the same basic functions (find, insert, delete) and the only difference is they are for different entities. Lot of code duplication is there.
+So instead we write interfaces that extends JpaRepository<T, ID> and use the in built functions provided by Spring Data JPA.
+
+spring data findById(id) - returns optional object so that even if there is no course with that id it wont return null. We can check if course was found or not by using optionalObj.isPresent().
+
+SpringData offers lot of inbuilt functions that will do the job for us. //crud, pagination, sort
+
+Spring Data REST ->
+
+Provides REST services around the Repository we want (here CourseRepository) so that using REST services we can operate on Course entity.
+Not generally recommended to use this but for quick exposure with rest can be used for development.

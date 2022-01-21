@@ -15,6 +15,8 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @NamedQueries(value = { @NamedQuery(name = "get_all_courses", query = "Select c from Course c"),
 		@NamedQuery(name = "get_all_100_steps_courses", query = "Select c from Course c where name like '%100 Steps'") })
@@ -33,6 +35,9 @@ public class Course {
 	private List<Review> reviews = new ArrayList<>();
 
 	@ManyToMany(mappedBy = "courses")
+	@JsonIgnore // we add this because courses is exposed via rest and when requested students
+				// contains passport and then passport contains students so this gets stuck in
+				// an infinite loop
 	private List<Student> students = new ArrayList<>();
 
 	@UpdateTimestamp
