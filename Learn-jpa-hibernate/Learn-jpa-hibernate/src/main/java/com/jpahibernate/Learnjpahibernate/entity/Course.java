@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,17 +12,27 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.PreRemove;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @NamedQueries(value = { @NamedQuery(name = "get_all_courses", query = "Select c from Course c"),
-		@NamedQuery(name = "get_all_100_steps_courses", query = "Select c from Course c where name like '%100 Steps'") })
+		@NamedQuery(name = "get_all_100_steps_courses", query = "Select c from Course c where name like '%100 Steps'"),
+		@NamedQuery(name = "get_all_courses_join_fetch", query = "Select c from Course c JOIN FETCH c.students s") })
 // @NamedQuery(name = "get_all_courses", query = "Select c from Course c")
 // @Table(name = "CourseDetails")
+@Cacheable // courses when fetched will be first checked in L2C and if not there updation
+			// of L2C is done. So, next time same details are fetched from L2C
+@SQLDelete(sql = "update course set is_deleted=true where id=?") // when delete is done on Course table, this query will
+																	// be called instead of actual delete
+@Where(clause = "is_deleted=false") // specifying that only when is_deleted is false, then only we will get that row
+									// details otherwise we skip
 public class Course {
 
 	@Id
@@ -46,12 +57,21 @@ public class Course {
 	@CreationTimestamp
 	private LocalDateTime createdDateTime;
 
+	private boolean isDeleted;
+
 	protected Course() {
 	}
 
 	public Course(String name) {
 		super();
 		this.name = name;
+	}
+
+	@PreRemove
+	private void preRemove() {
+		this.isDeleted = true; // setting is_deleted to true before any removal is done for the entity so that
+								// cache can be updated and then softdelete will update the database also (now
+								// both cache and db are in sync)
 	}
 
 	public String getName() {

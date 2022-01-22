@@ -2,6 +2,8 @@ SOAP vs REST
 hal standard rest
 code review standards
 jpa vs Hibernate
+batch oriented application
+static domain model
 
 hazelcast cache
 mockito

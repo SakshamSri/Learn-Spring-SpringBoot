@@ -2,6 +2,8 @@ package com.jpahibernate.Learnjpahibernate.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -14,7 +16,10 @@ public class Review {
 	private Long id;
 
 	@Column(nullable = false)
-	private String rating;
+	@Enumerated(value = EnumType.STRING) // default is ordinal, with ordinal we can insert using indexes but if enum
+											// positioning changes the value that index corresponds to will also change
+
+	private ReviewRating rating;
 
 	private String description;
 
@@ -24,12 +29,12 @@ public class Review {
 	protected Review() {
 	}
 
-	public Review(String rating) {
+	public Review(ReviewRating rating) {
 		super();
 		this.rating = rating;
 	}
 
-	public Review(String rating, String description) {
+	public Review(ReviewRating rating, String description) {
 		super();
 		this.rating = rating;
 		this.description = description;
@@ -43,11 +48,11 @@ public class Review {
 		this.description = description;
 	}
 
-	public String getRating() {
+	public ReviewRating getRating() {
 		return rating;
 	}
 
-	public void setRating(String rating) {
+	public void setRating(ReviewRating rating) {
 		this.rating = rating;
 	}
 

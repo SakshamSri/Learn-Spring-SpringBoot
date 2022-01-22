@@ -250,3 +250,76 @@ Spring Data REST ->
 
 Provides REST services around the Repository we want (here CourseRepository) so that using REST services we can operate on Course entity.
 Not generally recommended to use this but for quick exposure with rest can be used for development.
+
+Caching (Hibernate & JPA) ->
+
+Multiple transactions run in parallel and each of them have their own PersistentContext that manages the entities and tracks them.
+
+FirstLevelCache -  When a transation fetches data from the database it and saves the data within itself (PersistentContext) so next time if you fetch the same details, it wont need to go to the db. The FirstLevelCache exists within the boundary of the transaction itself. This cache is automatically present whenever a transaction is executing.
+FirstLevelCache should be enabled from the Service/Business layer so that any call to the data layer can be cached.
+
+SecondLevelCache - This level of cache caches the data that is common to all the users in an application. This cache is present for all the transactions to use once updated.
+Suppose, a transaction is for a list of countries (that is common across all users) so Transaction1 will go SecondLevelCache and request for data. If not present, it will go to DB and update the SecondLevelCache and thereafter, all further request from Transaction1 or TransactionX can be fetched from the SecondLevelCache itself.
+Eg of SecondLevelCache = EhCache
+SecondLevelCache is configured through application properties. (for EhCache)
+Also, SecondLevelCache is specific to an application.
+
+SoftDelete -> (hibernate specific implementation)
+Keep the history of what you have deleted. Soft delete is done by adding a column that keeps a track of whether that row is active or not. We can add a query to run whenever delete is made on an entity. Now if we do a find, since the row is not deleted instead is_deleted is set to true, we will still find that row.
+To stop this we add @Where clause to Course entity and specify that only when is_deleted is false we get that row.
+
+If you run any native query (with SoftDelete added on the entity), SoftDelete will not work for native queries.(you can manually add to the native query to fetch only those where is_deleted is false)
+
+When we do a delete, and hibernate fires the query we specify for SoftDelete, we only update the is_deleted column in the database for that id. But, we dont update that field in the entity for the Cache(First and Second). We need to update the entity itself here, so we add @PreRemove hook over a method we define. This method will be called before whenever a remove is done, so we can set update the entity field also here.
+
+Hooks:
+PreRemove before removal
+PostLoad as soon as entity is retrieved and loaded
+PostPersist after we persisted
+PostRemove after removal
+PostUpdate after an entity is updated
+PreUpdate before updating
+PrePersist before persisting
+
+@Embeddable
+If we want any entity to have an object embedded in itself
+
+Student class can have an Address field (for which we dont want to create a new table and do a mapping but we want to add a new class Address so that it can be resued elsewhere)
+In such cases, we can add @Embeddable over Address class and @Embedded over the field address in Student entity.
+Here, all fields of address class will become columns in Student table as if it was a part of it.
+
+@Enumerated
+When column table is an Enum
+
+Use String value instead of Ordinal value because ordinal value uses the positioning of the values in Enum and if someone inserts before or between some values a new value, ordinal values will change.
+With ordinal we can insert using indexes but if enum positioning changes the value that index corresponds to will also change
+
+If we add Reviews also to the ToString() method in Course, then when we print course, we will send another query for fetching the details of the review (considering review is lazy fetched). This can add load or performance issues when toString() is called everytime over 1000 transactions.
+
+JPA is mostly used for relational database, simple queries CRUD operations or some normal joins, static domain model (not automated one)
+JPA not used when its a batch oriented application(millions of rows are fetched and updated), or we are looking for performance intensive solutions.
+
+For Best Performance Tuning ->
+- monitor and measure performance using stats
+- identify the right indexes for the table (like if student is often searched via their address, index the address instead of id(which is by default indexed))
+- dont let the size of first level cache outgrow the performance gained by using cache (keep clearing it via EntityManager)
+- enable second level cache (common data for all users)
+- distributed cache (cache across multiple application instances (eg hazelcast))
+- use lazy fetch mostly (use eager when really necessary(like always needed then only))
+- avoid N+1 problem
+
+N+1 problem ->
+Suppose you do select c from course c and get all the courses.
+Now, when you print the details of each course you also print the course.getStudents() as well.
+
+If fetch is lazy:
+Here, 1 query is run to get all the courses. Now, for n courses retrieved, we will fire n more queries to get back students of each the course.
+So total queries run is n+1.
+
+One solution is to make the Course <-> Student relationship eager fetch(its ManyToMany so by default it is lazy)
+but making it eager will make it so everytime course is fetched, we will get the students no matter what.
+
+Second solution is to use EntityGraph, we dont change the fetch (leave it as lazy). We define an EntityGraph for Course.class and add SubGraph for the field we want to fetch eager (here "students")
+Then while calling query, we will do .setHint()
+
+Third solution using JoinFetch. Here we modify the query itself we are using to join fetch the students with the course.

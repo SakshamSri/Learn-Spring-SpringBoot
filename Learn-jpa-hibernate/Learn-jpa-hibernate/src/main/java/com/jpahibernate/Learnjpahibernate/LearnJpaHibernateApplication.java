@@ -46,6 +46,7 @@ public class LearnJpaHibernateApplication implements CommandLineRunner {
 		// employeeRepository.getFullTimeEmployees());
 		// logger.info("\n employeeRepository.getPartTimeEmployees() -> {}",
 		// employeeRepository.getPartTimeEmployees());
+		// courseRepository.deleteCourseById(102L);
 	}
 
 }

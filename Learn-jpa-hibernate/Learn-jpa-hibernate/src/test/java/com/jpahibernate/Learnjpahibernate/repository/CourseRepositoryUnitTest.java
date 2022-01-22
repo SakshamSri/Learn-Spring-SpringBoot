@@ -70,4 +70,16 @@ class CourseRepositoryUnitTest {
 		Review review = em.find(Review.class, 401L);
 		logger.info("\nuT2 - review.getCourse() -> {}", review.getCourse());
 	}
+
+	@Test
+	@Transactional // the whole section needs to be within a transaction
+	// verifying first level cache is present in PersistenceContext
+	void uT3() {
+		Course course1 = courseRepository.findCourseById(101L);
+		logger.info("First retrieval of course with id 101 - {}", course1);
+
+		Course course2 = courseRepository.findCourseById(101L); // when checked from logs, we can see no other select
+																// query is being ran, the data is fetched instantly
+		logger.info("Second retrieval of course with id 101 - {}", course2);
+	}
 }

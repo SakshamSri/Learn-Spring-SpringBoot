@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.jpahibernate.Learnjpahibernate.entity.Course;
 import com.jpahibernate.Learnjpahibernate.entity.Review;
+import com.jpahibernate.Learnjpahibernate.entity.ReviewRating;
 
 @Repository
 @Transactional
@@ -70,8 +71,8 @@ public class CourseRepository {
 			return;
 		logger.info("\nCourse reviews -> {}", course.getReviews());
 
-		Review review1 = new Review("NewReview101", "DescriptionNew101");
-		Review review2 = new Review("NewReview102", "DescriptionNew102");
+		Review review1 = new Review(ReviewRating.FIVE, "DescriptionNew101");
+		Review review2 = new Review(ReviewRating.FOUR, "DescriptionNew102");
 
 		/**
 		 * entityManager.persist(review1); entityManager.persist(review2); if we persist
