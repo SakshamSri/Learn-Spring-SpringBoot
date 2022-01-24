@@ -1,6 +1,6 @@
 "All below notes are according to Udemy tutorial : Master Hibernate and JPA with Spring Boot in 100 Steps.
 Course : Section 19 - Introduction to Spring Framework in 10 Steps
-Corresponding Github Code Repo : Learn-Spring-SpringBoot/Learn-spring-basics/learn-spring-basics/"
+Corresponding Github Code Repo : Jpa-Hibernate/Learn-Spring-SpringBoot/Learn-spring-basics/learn-spring-basics/"
 
 Before introducing beans, questions to be asked :
 

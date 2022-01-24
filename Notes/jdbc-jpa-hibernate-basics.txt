@@ -1,6 +1,6 @@
 "All below notes are according to Udemy tutorial : Master Hibernate and JPA with Spring Boot in 100 Steps.
 Course : Section 3 onwards
-Corresponding Github Code Repo : Learn-Spring-SpringBoot/Learn-jdbc-jpa/Learn-jdbc-jpa/"
+Corresponding Github Code Repo : Jpa-Hibernate/Learn-Spring-SpringBoot/Learn-jdbc-jpa/Learn-jdbc-jpa/"
 
 before springjdbc, even a single query line will be huge because of
 1) get connection

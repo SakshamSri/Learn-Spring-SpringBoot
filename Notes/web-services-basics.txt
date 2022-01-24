@@ -1,0 +1,88 @@
+"All below notes are according to Udemy tutorial : Master Microservices with Spring Boot and Spring Cloud.
+Course : Section 2
+Corresponding Github Code Repo : None"
+
+Web Service ->
+
+Software system designed to support interoperable machine-to-machine interaction over a network.
+-Designed for application to application interaction
+-Should be inter  (platform independent (can be java dotnet etc))
+-Allow communication over a network
+
+--how data transfer happens?
+ApplicationA is asks for data from WebServiceA. ApplicationA will send a request and WebServiceA will send back a respond that will contain the requested data.
+
+--web service platform independent?
+We should be able to call the web service from a javaapp or a dotnetapp or a phpapp. For this, the request and respond format should also be platform independent.
+Two most common general req/res formats: XML and JSON
+Any platform can generate a request and receive a respond in XML or JSON format.
+
+--how an application know what is the format of request and respond? what to send, where to send?
+Every WebService offers a "Service Definition".
+Service Definition offers a reuest/respond format, request structure, respond structure and the endpoint.
+
+
+Keyterms for a WS:
+
+Request - Input to a Web Service
+Respond - Output from a Web Service
+Message Exchange Format - Format of request and respond (xml/json)
+Service Provider - ApplicationA wants data from WebServiceA. WebServiceA is the service provider. Service Provider is the one that hosts the WebService.
+Service Consumer - The application requesting for data from the WebService is the Service Consumer.
+Service Definition - Contract between service provider and service consumer. Service Definition offers a reuest/respond format, request structure, respond structure and the endpoint(url).
+Transport - How a service is called. If service is exposed over internet then need to use HTTP or is exposed over a queue need to use a Message Queue(Message is placed by the consumer in the queue, the provider listens on the queue and as soon as there is a request, it sends back the respond over the queue)
+
+
+SOAP basics (Simple Object Access Protocol, full form is no longer valid. Now it is just SOAP) ->
+Defines a way for building web services.
+We use XML for Message Exchange Format.
+WS needs a specific xml request and response for SOAP. It needs to have a SOAP Envelope that contains a SOAP header and a SOAP body.
+Header is for authentication, signatures, authorization. Body is for the real content.
+
+SOAP just provides a format for your request and response. No restrictions are posed on the Transport (http or mq).
+Service Definition is done using Web Service Definition Language (WSDL).
+WSDL defines:
+Endpoint - URL
+All operations - all operations allowed (get, post, etc)
+Request and Response structure
+
+
+REST basics (Representational State Transfer) ->
+REST is making best use of HTTP.
+The request and respond between a browser and server is defined by HTTP. Browser sends a GET request to the server and server send back a HTTP reponse that contains an HTML. Browser takes the HTML and displays.
+The Submit button we click after filling a form is POST request sent to the server.
+
+HTTP defines the headers and the body for both request and respond here.
+It also defines Request Methods. (GET get details, PUT update, POST create)
+For reponse, we have HTTP Reponse Status Codes. (200, 404, 400, etc)
+
+We basically make use HTTP to create our web services and thus the concept of RESTfull Web Services.
+RESTfull WS try to define services by using different concepts that are already present in HTTP.
+
+Most important abstraction in REST is RESOURCE. A Resouce is anything we want to expose to the outside world through our application.
+Eg. Users using an application are resource, Single user is a resource, List of TODOS in an application is a resource, Single TODO is a resource, etc.
+
+A Resource has an URI.
+All these resources will have an URI also. (/users/UserX/todos, /users/UserX, etc)
+
+Resource can have different implementations (HTML, JSON, XML)
+REST does not care about resource representation. It can be XML, HTML or JSON.
+Most important is that we define our resource and perform the actions on the resource using concepts of HTTP.
+We want to add a user, we do a POST at /users. We want to delete a TODO, we do a DELETE at /users/UserX/todos/Y. We want to get a list of users, we do a GET at /users.
+For any operations, you have to use the verbs provided by HTTP (GET, POST, PUT, FETCH, etc)
+
+Transport is always over HTTP.
+
+No Standard Definition is present defined by HTTP so we have a Web Application Definition Language (WADL)
+WADL is one of the formats that can be used to specify your RESTful WS.
+Another popular defintion for REST is Swagger.
+
+
+SOAP and REST basics ->
+Soap and Rest are not really comparable.
+Soap is a format of XML and Rest is an architectural style.
+Differences SOAP vs REST based on
+1) Exchange format (XML vs JSON/XML)
+2) Service Definition (WSDL vs WADL/Swagger)
+3) Transport (HTTP/MQ vs HTTP only)
+4) Ease of implementation (SOAP requires WSDL and proper XML format plus other complexities with parsing XML vs REST uses JSON, no Service Definition, comparably easy)

@@ -1,6 +1,6 @@
 "All below notes are according to Udemy tutorial : Master Hibernate and JPA with Spring Boot in 100 Steps.
 Course : Section 2
-Corresponding Github Code Repo : Learn-Spring-SpringBoot/Learn-SpringBoot-withRest/Learn-SpringBoot-withRest/"
+Corresponding Github Code Repo : Jpa-Hibernate/Learn-Spring-SpringBoot/Learn-SpringBoot-withRest/Learn-SpringBoot-withRest/"
 
 @RestController -> to configure a controller
 Methods can be annotated with @GetMapping for GET request
