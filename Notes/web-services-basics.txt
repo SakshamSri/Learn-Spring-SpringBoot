@@ -48,6 +48,7 @@ Request and Response structure
 
 
 REST basics (Representational State Transfer) ->
+REST is a style of software architecture for distributed hypermedia systems.
 REST is making best use of HTTP.
 The request and respond between a browser and server is defined by HTTP. Browser sends a GET request to the server and server send back a HTTP reponse that contains an HTML. Browser takes the HTML and displays.
 The Submit button we click after filling a form is POST request sent to the server.
