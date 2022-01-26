@@ -1,0 +1,7 @@
+package com.restful.webservices.Learnrestfulwebservices.exception;
+
+public class UserNotFoundException extends RuntimeException {
+	public UserNotFoundException(String message) {
+		super(message);
+	}
+}

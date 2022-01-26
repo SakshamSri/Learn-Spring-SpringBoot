@@ -1,3 +1,12 @@
 "All below notes are according to Udemy tutorial : Master Microservices with Spring Boot and Spring Cloud.
 Course : Section 3
 Corresponding Github Code Repo : "
+
+Dispatcher Servlet handles all the requests and mappings. It tells the Message Converter (here Jackson) to convert the bean to JSON format for output. It is mapped to [/] on the application so any requests that comes goes through it.
+
+If we return void when creating user via Post, the status returned automatically will be 200OK.
+For user creation, we want status code to be 201Created. To do so, we use ServletUriComponentsBuilder and ResponseEntity.
+
+We should always have a common Exception Structure for all kinds of errors.
+We create a exception structure and a common handler and then extend to all exceptions accross application using ResponseEntityExceptionHandler.
+If we have multiple controller classes, we can share something (like common exception) across all controllers using @ControllerAdvice
