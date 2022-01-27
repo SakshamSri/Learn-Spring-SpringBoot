@@ -1,0 +1,29 @@
+So suppose A and B are working on features separately and making some code changes. They might have made changes that will in one way or the other affect the other user's changes, or some lines were deleted that was being used by other user or different changes to same line was made. Earlier there used to not so frequent merges, push was done only when feature was finished. When finally, the code merge will happen it will grow to Merge Conflicts which will require another lapse of time to resolve it.
+
+Now IRL, there might be 100s of developers working on much larger codebase and then this Merge Conflict will be huge and will require a lot of time and effort to resolve. It will be a Code Merge Hell.
+
+To avoid the Merge Hell :
+What we do now is, now if only small part of the feature (suppose a method that was needed) or some smaller parts are doen, A will push the code to main. Now, when B will start working she will fetch the latest changes and then start working and that will include A's changes. Similarly, if B finishes a part, she will push. A will fetch the latest changes and that will include B's changes and then work on his feature.
+Now, here there will also be conflicts but the conflicts wont be huge because possibly that conflict change was made yesterday or a day before and can be resolved easily and quickly. So, here we instead of doing the whole feature and pushing it all together and causing a Merge Hell, we do Continuous Integrations and resolve smaller conflicts instantly.
+
+This leads to another issue because with continuous integrations there is this continuous conflicts issue also. Even though the conflicts are small but there will be regular conflicts.
+
+To avoid this regular conflicts:
+What we do is add an automation for every code push. So, whenever there is a code push, it gets detected by an automation that builds the code and runs the unit tests. If there is any failure, it will mail the team that the build is failing and the last changes were made by X dev so it needs to be fixed. Once fixed, latest can be pulled and worked upon further.
+
+One more issue before using CI was the testing. Devs have had to push the whole feature when done and after Merge Hell, it needed to be gone through testing. The testing was only done all the merger has happened. Now, if testing failed at this point the devs need to go through the whole source code to find the bug. Then again the whole dev test part will be repeated and all things are done MANUALLY as well.
+
+After CI, since testable build is available almost all time and there is already often Unit Testing done when building so the testing part is made more efficient.
+CI also helps with the testing team as well beacuse there is continuous integrations and for every integration we are building the code, the test team has the availability of the latest build all the time and can do system/integration testing. That testing can take place after every build or according to whatever is the business requirement.
+
+
+
+Case Study : To solve this issue of merge hell and late testing, Nokia adopted something called Nightly Build.
+All the source code commits that were made during the day were pulled by the build server in the night and testing was done. So, tomorrow everyone knows something failed was due to yesterday commits.
+This is better than altogether testing at the end but again you need to go through all commits that were made yesterday to know which one made the tests failed.
+
+This was later solved by using CI server and for every commit build was run and testing was done so if anything fails we know what commit caused that failure instead of searching through all commits.
+
+With CI, locating and fixing of bugs was drastically made more efficient.
+
+One of the most popular tool for CI is JENKINS.

@@ -1,0 +1,55 @@
+Open Source CI tool written in Java to automate software development process, making sure there is minimum involvement from us. It integrates all different parts of development like source code manager (code repo), orchestration tools, build tools (maven or msbuild), dedicated ftp server for storing builds, testing environment, final deployment plus monitoring.
+
+Free, highly modifiable and supports various different plugins(over 1000) for different different tools.
+
+Jenkins achieves CI using plugins. For eg: we have git for version control, maven for build, Selenium for continuous testing, puppet for configuration management (used for configuring the environments for testing, prod, etc.), nagios for continuous monitoring, ansible for continuous deployment.
+There are plugins for test, reports, notification, deployment, build/compile, etc.
+
+Earlier :         Code -> Source code manager -> Tester -> Deployment
+
+With Jenkins :    Code -> Source code manager -> Jenkins -> Deployment
+                                                  ^
+                                                  |
+                                                  Tester
+
+It runs on any major platform.
+
+We create jobs in Jenkins to define what are the automations we want. Like we want to pull the code as soon as there is any code changes, build it and run tests on it and send to testing server, then send to staging server and after review, send to PROD. So, here if any failure happens it goes to whoever is the concerned person, like if test fails then it will go the dev whose changes were being build and tested. And, dev needs to fix it and send the code again and similar cycle happens again.
+
+General Workflow ->
+
+Developer > pushes code to shared repo > jenkins
+
+Jenkins will keep pollling the repo at some intervals to check whether there has been any commits or not.
+It will pull the code on any commit and build the code.
+Devs will be notified for the build result.
+
+You can add PMD warning also here before sending for test. PMD warnings will list all the warnings in the project that can be reviewed.
+Jenkins will now send the build for testing (if you add testing) that is Unit Testing.
+
+For maven, in the maven lifecycle there are phases which are validate (proj is correct), compile, test (Junit or something), package (distributable format such as JAR), verify (integration tests), deploy.
+You can specify for a Java project from Jenkins which part of the lifecycle you want to invoke.
+
+After this, the integration testing can be added to some different test server and also some automated tests and then code is ready to be deployed.
+
+How to build Pipeline in Jenkins?
+You can create a pipeline view and there you can specify what is the first thing you need to do which is generally compile. Then you add code review by configuring them to build after compile has completed. (you can enable to run even after compile fails, etc). Similarly, you can add for Test as well.
+
+These Compile, CodeReview and Test jobs you need to create first (like creating a new proj) and defining there what repo to use and what to do. Then they can be added in a pipeline and then the pipeline can be executed as well.
+
+
+Disadvantages of using Single Jenkins Server :
+
+If Jenkins is on Linux server and if you want to test something that requires different OS says Windows for some Internet Explorer related web tests then you need another Jenkins Server on Windows platform as well.
+
+If we have heavier projects to be build on regular basis, then one single Jenkins Server wont be able to handle the load.
+
+To resolve these issues:
+There is Jenkins Distributed Architecture.
+There is one Jenkins Master and multiple Jenkins Slaves.
+
+Master is used for scheduling build jobs and Slaves are used for actual executiong of the jobs. It monitors the slaves and taking them online offline as required. It also collects and displays the build results. You CAN directly execute the build on Master as well.
+
+Slaves are java executables that are present on remote machines(different VMs for eg). They perform the jobs as told by Master. They operate on different different environments (OS). We can configure Jenkins to execute a particular type of build on Jenkins slave, or configure to build on a particular type of slave or let the Master choose where to execute.
+
+You can add a slave from Configure Jenkins option and add the details of the remote machine (like IP, Username, password) and it will be registered as a slave. For the directory you specify when adding slave, at that directory a slave.jar will be added.

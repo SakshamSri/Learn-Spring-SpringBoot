@@ -1,0 +1,33 @@
+Why?
+
+Service to Service communication.
+For eg. Service A -> Service B, this call here is usually done over a TCP connection. Now if Service B took long to respond, Service A might be stuck waiting and latency will added. If Service B dies, then Service A will keep on sending requests waiting for response.
+Here, Service A is tightly coupled with Service B. This is bad.
+
+So, we do asynchronous messaging so that after sending a request to Service B, Service A can continue on with his lifecycle. It need not depend on Service B response to proceed further. A need to not care about who process the request as well.
+
+Asynchronous messaging is achieved using a Message Queue.
+So, instead of directly sending the message to B, A send the message to a MQ. Message X gets added to Queue and A continues with its tasks. It does not care who process the requests. Now, B will pickup X from MQ and process it.
+A is producer and B is consumer.
+
+MQ removes the direct dependency between services.
+When we do are writing a code for a service A to send a network packet to service B, we write these API Contracts that makes the services coupled.
+MQ helps decooupling them.
+It also helps in cases where we produce messages faster than we can consume it by scaling up the consumer to match the production rate. We can have more than 1 consumers for scaling.
+
+MQ can sit on its own machine so it can offload some of the work done by application to manage the MQ. This makes performance better.
+
+RabbitMQ is the implmentation of AMQP message model.
+
+In RabbitMQ, we have a exchange node that connects to all the queues (can by many) via a binding key.
+Any message that comes from A, will be sent to EXCHANGE and then accordingly to the method of routing, it will go the respective queues.
+
+Routing methods:
+Fanout - message from A is duplicated and sent across all queues and all the consumers receive the message.
+Direct - we assing a routing key to the message and that routing key is matched against the binding key and send to the matched binding key queue
+Topic - a topic is assigned and is checked with the binding key and if it somewhat matches (not completely) then also the message is sent to that queue.
+Header - header is attached to message corresponding the queue we want the message to be in.
+Default - All queues have a name, so we assign the respective name of the queue where we want to send the message.
+
+RabbitMQ waits for acks from the Consumer before removing the message from queue.
+Its secure, scalable (RabbitMQ Clusters making it fault tolerance also).

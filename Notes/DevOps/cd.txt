@@ -1,0 +1,8 @@
+Code -> Build(CI server) -> QA(test) -> Stage(test) -> Production
+
+How the build is moved through different envrionments, what is the order? All handled via auto deploy tools (CD pipeline tools) The rules on when and how to move through different stages.
+
+So basically the idea behind CD is:
+We have a valuable code change (not whole, just part because CI), we push it. It goes to CI to build (to make it a working software/application) and from there it automatically goes through some Test environment say QA (so that we are not breaking anything) and if tests pass, it will go to say another test environment say Stage where there will be more automated tests. And, if those pass the code might require an approval (or not depending on the organisation), and if approved, it will go to PROD (there might be more testing before PROD as well like Acceptance Testing, etc).
+
+If there is no PROD in CD pipeline, and just the code is ready to go to PROD, then CD means Continuous Deployment other Delivery.

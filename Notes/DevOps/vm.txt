@@ -1,0 +1,8 @@
+Hypervisor : A hypervisor abstracts OS.
+
+Type 1 Bare Metal Hypervisor - Install directly on hardware. Eg Vmware ESXI. He controls all the resources directly. Most efficient and best performance plus highly secure. Efficient because no OS to load and no drivers to load. Secure because it is removes the vulnerabilies of the OS by removing the Host OS itself. So, if any hack happens, it will affect only 1 VM instead of all. Type 1 mainly used for Enterprises for prod level workload. Can be upscaled as well.
+The initial cost is high and required good support as well.
+
+Type 2 Hosted Hypervisor - Install as an application on top of Host OS. Eg VirtualBox. Asks the OS to allocate some of the resources CPU, Ram, etc. to the new machine or Guest OS. (like Guest using resources of the Host). Guest OS runs as a process on Host OS. It relies on Host OS to manage calls to CPU, Memory, Storage, etc.
+Since everything goes throught that single OS, there comes Latency issues. Also, any flaws in the Host OS will affect all the VMs. Typically used for end-user systems where performance and security is not a major requirement.
+Lower cost than Type 1. Make an ideal test platform compared to prod environmentdock.
