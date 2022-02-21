@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -14,9 +16,13 @@ public class User {
 	@GeneratedValue
 	private Long id;
 
+	@Size(min = 2, message = "Name cannot be less 3 characters.") // min size = 2 with error message on failed
+																	// validation
 	@Column(nullable = false)
 	private String name;
 
+	@Past(message = "Birthdate should always be in past.") // birthdate will always be in past with error message on
+															// failed validation
 	private Date birthDate;
 
 	protected User() {

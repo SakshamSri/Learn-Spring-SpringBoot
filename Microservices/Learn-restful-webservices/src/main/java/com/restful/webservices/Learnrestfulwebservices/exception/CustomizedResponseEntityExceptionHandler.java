@@ -2,8 +2,10 @@ package com.restful.webservices.Learnrestfulwebservices.exception;
 
 import java.util.Date;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +40,16 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 			WebRequest request) {
 		GlobalResponseException responseException = new GlobalResponseException(new Date(), ex.getMessage(),
 				request.getDescription(false));
+		return new ResponseEntity<Object>(responseException, HttpStatus.BAD_REQUEST);
+	}
+
+	@Override
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+		GlobalResponseException responseException = new GlobalResponseException(new Date(), "Validation Failed",
+				ex.getBindingResult().toString()); // customize the BindingResult to show your own custom message
+													// details
 		return new ResponseEntity<Object>(responseException, HttpStatus.BAD_REQUEST);
 	}
 }

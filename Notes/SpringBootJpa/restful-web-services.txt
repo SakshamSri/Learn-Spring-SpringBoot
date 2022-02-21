@@ -10,3 +10,14 @@ For user creation, we want status code to be 201Created. To do so, we use Servle
 We should always have a common Exception Structure for all kinds of errors.
 We create a exception structure and a common handler and then extend to all exceptions accross application using ResponseEntityExceptionHandler.
 If we have multiple controller classes, we can share something (like common exception) across all controllers using @ControllerAdvice
+
+handleMethodArgumentNotValid method defined in ResponseEntityExceptionHandler class is fired whenever there is some invalid argument in incoming data.
+We can override it to show our own message according to the invalid field.
+
+The Spring HATEOAS project is a library of APIs that we can use to easily create REST representations that follow the principle of HATEOAS (Hypertext as the Engine of Application State).
+The principle implies that the API should guide the client through the application by returning relevant information about the next potential steps, along with each response.
+The core problem it tries to address is link creation and representation assembly.
+
+Internationalisation - i18n
+Customizing services for different users (different countries have different languages)
+"Accept Language" can be added in headers when sending a request, so that the server will only send data in that language.

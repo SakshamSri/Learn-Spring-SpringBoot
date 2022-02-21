@@ -1,11 +1,17 @@
 package com.restful.webservices.Learnrestfulwebservices.controller;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.net.URI;
 import java.util.List;
+
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,16 +40,25 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{id}")
-	public User getUser(@PathVariable Long id) {
+	public EntityModel<User> getUser(@PathVariable Long id) {
 		User user = userDaoService.findUser(id);
 		if (user == null)
 			throw new UserNotFoundException("Id=" + id + " does not exist.");
-		return user;
+
+		EntityModel<User> userModel = EntityModel.of(user); // implementing hateoas, adding model of type user
+
+		WebMvcLinkBuilder linkRetrieveUsersBuilder = WebMvcLinkBuilder.linkTo(methodOn(this.getClass()).getAllUsers());
+		userModel.add(linkRetrieveUsersBuilder.withRel("all-users")); // for all getUser, we will return a link to
+																		// getAllUsers link
+
+		return userModel;
 	}
 
 	@PostMapping("/users") // @RequestBody makes so that any input coming from the post request will be
 							// mapped to the user object
-	public ResponseEntity<Object> saveUser(@RequestBody User user) {
+							// @Valid makes so that the incoming data verifies all fields in User class that
+							// have some validations
+	public ResponseEntity<Object> saveUser(@Valid @RequestBody User user) {
 		if (user.getName() == null || user.getBirthDate() == null)
 			throw new UserDetailsNotValidException("User details are not valid. Name=" + user.getName() + " BirthDate="
 					+ user.getBirthDate().toString());
@@ -59,7 +74,7 @@ public class UserController {
 
 	@DeleteMapping("/users/{id}")
 	public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
-		User user = getUser(id);
+		User user = userDaoService.findUser(id);
 		userDaoService.deleteUser(user);
 
 		return ResponseEntity.noContent().build(); // This will return a 204 No Content response, we can change the
