@@ -21,3 +21,12 @@ The core problem it tries to address is link creation and representation assembl
 Internationalisation - i18n
 Customizing services for different users (different countries have different languages)
 "Accept Language" can be added in headers when sending a request, so that the server will only send data in that language.
+
+Content Negotiation -
+User is asking data in different format
+For eg.
+To receive data in xml format, we can add jackson dataformat dependency and that is it.
+The user can request xml data by sending header key "Accept" as "application/xml" and data will be returned in xml.
+
+We can use springdoc-openapi to generate document for our API. (instead of manually documenting everything)
+It uses open-api generated JSON (v3/api-docs) and generates a swagger UI using that JSON.
