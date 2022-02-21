@@ -1,0 +1,64 @@
+Why?
+
+Issues before docker:
+
+1) Application working in dev's environment but not in testing or production.
+
+2) Microservices are : smaller services that communicate with each other over network to fulfill one particular goal. Like a shopping online service can have microservices as account service, cart service, order service, etc. Applications are easier to build, we can use different tech stacks for different microservices, if any microservice goes down, we still have whole application working.
+
+Earlier developing application require multiple VMs on one machine where each VM will be having one microservice.
+
+Major disdv : Resource is not properly utilised in these microservices VMs.
+
+How issues are solved?
+
+(1) Docker provides consisten environment throughout the SDLC so same env is present in dev, test and prod.
+
+So to resolve (2) we use Docker Containers on top of VMs. Each container will contain dependencies for the respective microservices. Dockers are fast because we dont assign resources to it, it can automatically consume resources upon need (in VMs we needed to assign each MS some pre allocated resources)
+
+We want to isolate the containers from the Host so we install containers on VMs. One main thing is suppose host has 64GB ram and 2TB storage and containers will only use 20GB of ram and 200GB of storage so we install a VM on the Host and assign the VM a memory of 20GB and 200GB storage and install docker containers on that. With this, we can use the rest of the resources for other purpose.
+
+Docker :
+
+Tool to create, deploy and run applications using containers.
+
+Docker engine is installed on top of Host OS. Engine creates containers which contains all the dependencies (libs/bin) for the application (microservices) that is running on that container.
+We dont have to preallocate resources (like RAM) in Docker.
+
+How Docker works (generally)?
+
+Developer writes a code and defines the requirements or the dependencies in an easy to write DOCKER FILE. This Docker file produces images that contain all those dependencies.
+
+Docker Containers are nothing but the runtime instance of that image.
+
+Now this image is uploaded to Docker hub (which is a git repo for docker images).
+From the hub, QA/STAGE or PROD can pull that image to prepare their own containers for testing or deployment.
+
+Advantages :
+
+With image being available across for creating containers, same environment is available as for dev, test or prod.
+
+Dockers are fast - because no virtualization is done, using same kernel. Kernel namespaces are used to achieve chroot-like effect. Each container will think they are in their own machine with "/" as their root directory.
+
+Dockers are lightweight - less memory because shared kernel, less disk space if we have some common libs/bins that are being used across all containers we can make so that they can be shared across all containers.
+
+
+Docker Example :
+
+So docker images are uploaded to hub and other teams can pull those images and build their containers but docker images are huge in size and will consume a lot of bandwith.
+
+What happens is developer will write the code and then write the dependencies needed in a docker file. Code will be pushed to repo.
+Jenkins will pull that code and build an environment according to the dependencies needed for that microservice/application.
+Now, this environment will be deployed to staging testing and production so in this way all the dependencies for your microservice is present across SDLC.
+With Docker, Jenkins is building still and moving through pipeline but the environments are being built using those docker images. From those images containers are created and the building testing is being done inside that container.
+
+Docker terms :
+
+Docker Registry - where images are stored. Docker Hub is Docker's own images cloud repo. It contains images like centos, alpine, archlinux, kali, etc.
+
+Docker Images - read only templates that users create that is used to create containers. It contains all the dependencies for that microservice. We can create our own image or pull an image from docker hub.
+It is possible that more than 1 image is required to create 1 container.
+
+Docker Compose - suppose we have different applications on different containers and all containers are linked together so you dont want to run all those containers one by one.
+We can use Docker compose to achieve that. (docker -compose up)
+For eg we have 1 container for webapp, 1 for postgres(db), 1 for redis(db/mq). We can define these containers in 1 YML file and use the docker compose command to run them all at once.

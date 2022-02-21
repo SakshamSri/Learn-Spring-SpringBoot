@@ -1,0 +1,21 @@
+User is accessing a site that is on a single server. OK
+10k users are accessing a site that is on a single server. NOT OK
+
+So, we make multiple instances of our application and host it on different different servers.
+But, now how user will know which server he needs to use?
+
+We add a Load Balancer that takes all the traffic from the users and distribute it across the servers.
+This helps in scaling. 50K users start using the site, it will create more instances of the application to process all the load. If the user count is less (say 1k), then it will scale down, shut some servers off to preserve resources and thus cost.
+
+Load Balancer is key component for cloud native architectures.
+
+How LB distributes load?
+
+- Round Robin: 1st user to server1, 2nd user to server2, 3rd user to server3, 4th user back to server1 (suppose we have 3 servers).
+Not good because some users maybe logged in for hours and some may log out within minutes, so the servers will be out of balance.
+
+- Smart LB: here LB is constantly in touch with servers and keeping note which server is how much busy, then incoming connection will be sent to lowest loaded server.
+It is more complex initially, and is more expensive.
+
+- there are 9 different algos that comes in between roundrobin(dumbest) and smartest LB.
+One such algo is:: Random select: instead of sequentially going through like round robin, it chooses randomly where to send the load.

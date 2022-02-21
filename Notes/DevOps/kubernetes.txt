@@ -1,0 +1,20 @@
+Suppose we have a webapp running on a container on a machine.
+Now if load increases on the server, we need to multiple machines with the same webapp running inside a container on respective machines.
+
+Since, we have multiple instances now, we need Load Balancer to balance the load.
+If load kept increasing, we need more machines with containers running inside them with the webapp and then maybe more Load Balancers as well to handle the load.
+
+We can also use multiple containers on same machine to run instances of the webapp but the point here is if the load is that huge that you need multiple machines with multiple containers and then load balancing between containers plus load balancing between machines plus load balancing between load balancers themselves.
+
+This becomes a huge mess.
+
+Kubernetes help here by orchestrating the containers.
+We install Kub-proxy and Kubeletes (responsible for scheduling and make sure apps within are healthy) on top each of the docker machines which then serve the purpose of worker nodes.
+We have a different server called the master server from where we manage the kubernetes using kubectl commands which in turn commands the worker nodes.
+
+Master server has something called Api server which exposes certain capabilities that allow us to define how we want to run our workloads.
+
+In Kubernetes, everything is done via PODS that are the smallest deployable units which we create and manage. It can have one or more than one containers. It contains the specification to run those containers.
+
+We use kubectl to send yml files to API server that in return manages the worker nodes according to the yml file configuration.
+We define what we images we want, how many instances should be running at a time, define an abstraction so that we have static ip for multiple containers to interact with each other (because when one container dies, new container that replaces old one will have new ip), we can have multiple containers with multiple service abstraction (ip thing), we can say to load balance it as well and assign public ip for end-user interaction.
