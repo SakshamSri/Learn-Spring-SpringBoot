@@ -43,6 +43,23 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 		return new ResponseEntity<Object>(responseException, HttpStatus.BAD_REQUEST);
 	}
 
+	// for post details not valid (null check) exception case
+	@ExceptionHandler(PostDetailsNotValidException.class)
+	public final ResponseEntity<Object> handlePostDetailsNotValidException(PostDetailsNotValidException ex,
+			WebRequest request) {
+		GlobalResponseException responseException = new GlobalResponseException(new Date(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<Object>(responseException, HttpStatus.BAD_REQUEST);
+	}
+
+	// for post not found exception case
+	@ExceptionHandler(PostNotFoundException.class)
+	public final ResponseEntity<Object> handlePostNotFoundException(PostNotFoundException ex, WebRequest request) {
+		GlobalResponseException responseException = new GlobalResponseException(new Date(), ex.getMessage(),
+				request.getDescription(false));
+		return new ResponseEntity<Object>(responseException, HttpStatus.NOT_FOUND);
+	}
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {

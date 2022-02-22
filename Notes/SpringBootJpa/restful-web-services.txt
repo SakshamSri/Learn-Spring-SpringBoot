@@ -30,3 +30,35 @@ The user can request xml data by sending header key "Accept" as "application/xml
 
 We can use springdoc-openapi to generate document for our API. (instead of manually documenting everything)
 It uses open-api generated JSON (v3/api-docs) and generates a swagger UI using that JSON.
+
+Actuator -
+Provides endpoints where we can manage and monitor our application when in production.
+We can use HAL Explorer to explore these endpoints. We can also use HAL to explore the hateoas links that we have provided.
+
+Static Filtering Response -
+We define on the Bean itself what fields we want to send back to the user and what fields we dont want to send back by using @JsonIgnore on fields. Everytime that field will be ignored.
+
+If we want for one response to ignore one field and to ignore another field in another response (another url),
+then we use:
+
+Dynamic Filtering Response -
+We add a little code to add dynamic filtering using MappingJacksonValue and FilterProviders.
+
+Versioning the REST -
+Suppose there is a bean PersonV1 with string name as field.
+But, later versions we started using PersonV2 with Name name where name has string firstname and lastname.
+Some users want the older version and some users want the newer version.
+
+To resolve:
+URI versioning opt1 : We can version the api itself. Make separate apis for PersonV1 bean and PersonV2 bean.
+v1/person and v2/person.
+Request Parameter Versioning opt2 : define a parameter in the request itself
+Header Versioning opt3 : define a parameter in the request header itself
+ContentNegotiation or Media Type Versioning opt4 : ContentNegotiation, we ask what we want. define "produces" for "Accept" header
+
+Basic Authentication - add using spring security (username and password)
+
+Richardson Maturity Model -
+1) expose soap ws in rest style (http://server/getPosts, http://server/deletePosts, etc)
+2) lvl 1 + proper resources uri (proper HTTP methods) - (GET http://server/accounts, DELETE http://server/accounts/10)
+3) lvl 2 + HATEOAS (hyerpmedia as the state of application engine - next possible actions)

@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.restful.webservices.Learnrestfulwebservices.bean.User;
 
+// Instead of creating all this manually, we can create interface extending JpaRepository<> 
+// which already have most functionalities present
 @Repository
 @Transactional
 public class UserDaoService {
