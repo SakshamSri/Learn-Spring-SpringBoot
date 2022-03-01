@@ -1,0 +1,4 @@
+microservices - autonomous services working together
+1) based on REST
+2) small deployable units
+3) cloud enabled (scalable easily, load balancing, etc)

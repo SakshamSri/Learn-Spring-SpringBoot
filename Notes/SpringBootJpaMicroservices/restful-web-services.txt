@@ -1,6 +1,6 @@
 "All below notes are according to Udemy tutorial : Master Microservices with Spring Boot and Spring Cloud.
 Course : Section 3
-Corresponding Github Code Repo : "
+Corresponding Github Code Repo : Learn-Spring-SpringBoot/Microservices/Learn-restful-webservices/"
 
 Dispatcher Servlet handles all the requests and mappings. It tells the Message Converter (here Jackson) to convert the bean to JSON format for output. It is mapped to [/] on the application so any requests that comes goes through it.
 
