@@ -18,3 +18,19 @@ we can directly use api gateway url to call microservice.
 <ip of apigateway>:<port of apigateway>/<name of application registered on Eureka>/<rest of url>
 
 we can implement authentication, etc on this api gateway before actually calling the underlying microservices.
+
+Resilience4j
+fault tolerance library
+
+default fallback response can be added if one of the microservice is down in a chain of microservices.
+we can add a circuit breaker pattern to reduce load.
+we can also add rate limiting.
+
+Circuit Breaker:
+circuit breaker can be in 3 states: CLOSED, OPEN, HALF_OPEN
+
+Once service starts and is responding successfully with response rate above some threshold (say X), circuit breaker will be in CLOSED state.
+Once the failure rate rises above X threshold, cb will switch to OPEN state and it will start returning default fallback.
+Once in OPEN state, it will wait for a certain time in that state and then move to HALF_OPEN state.
+In HALF_OPEN state, it will pass through some requests (say10%) and for others it will return a fallback. If cb sees, that for that 10% request, if the failure is still above a threshold, it will again move back to OPEN state and return fallback for all. There again it will wait for sometime and then again move to HALF_OPEN state.
+If for the incoming 10% requests in HALF_OPEN state, failure rate is belore the threshold X, it will move to CLOSED state and all the incoming request to process. Again on failure rate going above threshold X, it will move to OPEN state.
