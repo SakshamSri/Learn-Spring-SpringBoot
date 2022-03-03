@@ -2,3 +2,19 @@ microservices - autonomous services working together
 1) based on REST
 2) small deployable units
 3) cloud enabled (scalable easily, load balancing, etc)
+
+feign makes it easy to call microservices from microservices. We create proxy of the calling microservice in the caller.
+
+even in proxy we hardcode the ip and port of the calling microservice.
+
+So, to avoid this and achieve dynamic instantiation of microservices, we use naming server or service registry (same).
+
+with eureka, you can directly just use feign client with microservice name. (no need of ip and port, even for multiple instances)
+
+API gateways to handle common tasks such as user authentication, rate limiting, and statistics.
+Sits between client and collection of backend services.
+
+we can directly use api gateway url to call microservice.
+<ip of apigateway>:<port of apigateway>/<name of application registered on Eureka>/<rest of url>
+
+we can implement authentication, etc on this api gateway before actually calling the underlying microservices.
