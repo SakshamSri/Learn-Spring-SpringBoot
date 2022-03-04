@@ -1,0 +1,86 @@
+docker hub contains repositories and each repository can have multiple images with versions(tags)
+
+image is a static byte representation of all the things required for your application
+container is running those static bytes or image
+Image is like a class, Container is like an object
+1 image -> N containers
+
+-p HOST_PORT:CONTAINER_PORT
+-d -> detached mode, in bg
+
+docker logs <container_id> to see some logs
+add -f to start following the logs from there
+
+docker container ls
+docker container ls -a
+docker container stop <container_id>
+
+All these commands are sent to Docker Daemon. (the terminal we are using to execute the commands is Docker Client)
+Daemon is responsible for managing containers, images and pulling/pushing images repo.
+Daemon handles how to create images.
+
+
+docker pull mysql
+this will pull the mysql image that has the latest tag.
+for your own image, you can point the latest to an older img and docker pull will download that older version because latest is attached to older img.
+default is always latest (which can be modified to not point to latest but generally it is not, because it is just a tag and nothing else)
+for specific tag, docker pull mysql:<tag>
+
+docker pull will only download
+docker run will download (if not present locally) and run container
+
+docker search <name> -> search the docker hub for all the related repo with that name. Check official or not.
+
+docker image history <imgid/imgname> -> will tell the history of how that image was created
+
+docker image inspect <imgid> -> detailed view of the image in JSON
+
+docker container unpause <containerid>
+pauses in that state
+
+docker container inspect - metadata of container
+
+docker container prune - remove all closed containers
+
+docker container stop -
+graceful shutdown
+SIGTERM signal is send (like windows shutdown)
+
+docker container kill -
+force kill of process
+SIGKILL is send (like manually power off laptop)
+
+docker run -> --restart=always -> when you restart or stop/start the docker desktop (which is docker daemon), it will automatically launch the container.
+If you stop/kill the container and prune it before restarting docker desktop, then the container wont start when you restart the docker desktop.
+
+docker run -> --restart=no -> default value.
+
+docker events -> to see what is happening in bg
+
+docker top -> top process running on the container
+
+docker stats -> what containers are using how much resources
+
+docker run -> -m X -> manually specify how much memory you want
+
+docker run -> --cpu-quota X -> total cpu_quota is 100000. You can specify X=5000 for which the container will use around 5% of CPU. (5% is very less so it will take a lot of time to start or stop)
+
+docker system df -> disk utilization of docker containers, images, volumes, cache
+
+
+Distrubuted Tracing ->
+it is used to debug or trace requests in a complex microservices chain.
+
+all the microservices are connected to Distrubuted Tracing Server which stores their info in a database.
+all the info that comes out of all the microservices are saved in that db.
+
+DTS eg => ZIPKIN
+
+to trace we need unique id for each microservice (api, exchange and conversion), so we use SLEUTH.
+SLEUTH also adds a unique id for each of the microservice calls.
+by default zipkin is configured in spring at 9411 port. if we launch zipkin on any other port, then we need to specify the port in application props.
+
+All microservice will be connecting to DTS over http calls. So, DTS can be down as well, so we have a queue in between DTS and microservices.
+RabbitMQ we can use here which will receive all the requests from microservices and DTS will pick it up from the RabbitMQ directly or after it is up (if it was down)
+
+In addition to DTS, we add a sample configuration. We dont want to trace all the requests as performance will be impacted. So, we only use %age of the requests.

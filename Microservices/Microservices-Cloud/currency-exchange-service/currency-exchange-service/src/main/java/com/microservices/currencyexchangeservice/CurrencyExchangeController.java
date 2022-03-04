@@ -1,5 +1,7 @@
 package com.microservices.currencyexchangeservice;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,8 @@ import io.github.resilience4j.retry.annotation.Retry;
 @RestController
 public class CurrencyExchangeController {
 
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
 	@Autowired
 	private Environment environment;
 
@@ -22,6 +26,7 @@ public class CurrencyExchangeController {
 	public CurrencyExchange getExchangeValue(@PathVariable String from, @PathVariable String to) {
 		from = from.toUpperCase();
 		to = to.toUpperCase();
+		logger.info("getExchangeValue called for {from} to {to} rate", from, to);
 		CurrencyExchange exchange = repository.findByFromAndTo(from, to);
 		if (exchange == null)
 			throw new CurrencyExchangeNotFoundException(
