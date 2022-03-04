@@ -1,4 +1,4 @@
-docker hub contains repositories and each repository can have multiple images with versions(tags)
+docker hub contains repositories and each repository can have multiple images with different different versions(tags)
 
 image is a static byte representation of all the things required for your application
 container is running those static bytes or image
@@ -84,3 +84,13 @@ All microservice will be connecting to DTS over http calls. So, DTS can be down 
 RabbitMQ we can use here which will receive all the requests from microservices and DTS will pick it up from the RabbitMQ directly or after it is up (if it was down)
 
 In addition to DTS, we add a sample configuration. We dont want to trace all the requests as performance will be impacted. So, we only use %age of the requests.
+
+
+pullPolicy = IF_NOT_PRESENT -> fetch from docker hub (base images like openjdk) only if not present locally
+default is ALWAYS -> always fetch from hub
+
+
+Default zipkin uses http to trace requests.
+We can configure to use RabbitMQ instead. We need do this in application props, but we can do this directly in docker compose yaml file.
+
+All application props can be done directly in yaml file.
