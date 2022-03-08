@@ -18,3 +18,9 @@ In Kubernetes, everything is done via PODS that are the smallest deployable unit
 
 We use kubectl to send yml files to API server that in return manages the worker nodes according to the yml file configuration.
 We define what we images we want, how many instances should be running at a time, define an abstraction so that we have static ip for multiple containers to interact with each other (because when one container dies, new container that replaces old one will have new ip), we can have multiple containers with multiple service abstraction (ip thing), we can say to load balance it as well and assign public ip for end-user interaction.
+
+replicasets - suppose there 1 pod running and you kill that pod manually, according to the replicaset set, that pod will be replaced with another pod.
+we can maintain replicaset to maintain X number of pods and if any one or more is/are down, it/they will be replaced.
+
+when a newer image is deployed via set deployment, kubernetes first creates a replicaset of 1 and creates a pod with a container with that image and if container runs fine, it starts creating more according the replicaset specified in older version and scales down the older replicaset by 1 each time new pod is deployed in newer replicaset.
+if container with newer image fails, it retains the older replicaset and this way smooth and continous upgrade is done.
